@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/frontend
+    container_name: frontend-ms
+    environment:
+      - PORT=3000
+      - SERVICE_BACKEND1=http://localhost:18001/api/message
+    ports:
+      - 18000:3000
+    networks:
+      - net-app01
+
+  backend1:
+    build:
+      context: ./backend1
+      dockerfile: Dockerfile
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/backend1
+    container_name: backend1-ms
+    environment:
+      - PORT=3001
+      - SERVICE_BACKEND2=http://backend2:3002/api/message
+    ports:
+      - 18001:3001
+    networks:
+      - net-app01
+      - net-app02
+
+  backend2:
+    build:
+      context: ./backend2
+      dockerfile: Dockerfile
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/backend2
+    container_name: backend2-ms
+    environment:
+      - PORT=3002
+    networks:
+      - net-app02
+
+networks:
+  net-app01:
+    driver: bridge
+    name: net-app01
+  net-app02:
+    driver: bridge
+    name: net-app02
