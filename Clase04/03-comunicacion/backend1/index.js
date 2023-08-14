@@ -18,6 +18,7 @@ app.get("/api/message", async (req, res) => {
   });
 });
 app.get("/healthcheck", (req, res) => res.send("ok"));
+app.get("/", (req, res) => res.send("ok"));
 
 const PORT = process.env.PORT || 19001;
 
